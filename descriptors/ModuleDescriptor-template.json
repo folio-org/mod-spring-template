@@ -1,5 +1,5 @@
 {
-  "id": "${artifactId}-${version}",
+  "id": "@artifactId@-@version@",
   "name": "The blueprint module that could be used as a template for folio spring based backend modules.",
   "provides": [
     {
@@ -25,7 +25,7 @@
   "permissionSets" : [],
   "requires": [],
   "launchDescriptor": {
-    "dockerImage": "${artifactId}:${version}",
+    "dockerImage": "@artifactId@:@version@",
     "dockerPull": false,
     "dockerArgs": {
       "HostConfig": {
