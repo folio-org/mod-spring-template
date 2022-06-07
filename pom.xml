@@ -27,7 +27,6 @@
     <folio-spring-base.version>4.0.0</folio-spring-base.version>
     <openapi-generator.version>5.4.0</openapi-generator.version>
     <mapstruct.version>1.4.2.Final</mapstruct.version>
-    <json.version>20211205</json.version>
   </properties>
 
   <dependencies>
@@ -35,12 +34,6 @@
       <groupId>org.folio</groupId>
       <artifactId>folio-spring-base</artifactId>
       <version>${folio-spring-base.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>${json.version}</version>
     </dependency>
 
     <dependency>
