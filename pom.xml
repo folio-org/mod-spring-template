@@ -12,7 +12,7 @@
   <artifactId>mod-spring-template</artifactId>
   <name>mod-spring-template</name>
   <version>1.0.0-SNAPSHOT</version>
-  <description>The blueprint module that could be used as a template for FOLIO Spring-based backend modules.</description>
+  <description>The blueprint module that should be used as a template for FOLIO Spring-based backend modules.</description>
   <packaging>jar</packaging>
 
   <licenses>
@@ -24,7 +24,7 @@
 
   <properties>
     <java.version>11</java.version>
-    <folio-spring-base.version>4.0.0</folio-spring-base.version>
+    <folio-spring-base.version>4.1.0</folio-spring-base.version>
     <openapi-generator.version>5.4.0</openapi-generator.version>
     <mapstruct.version>1.4.2.Final</mapstruct.version>
   </properties>
