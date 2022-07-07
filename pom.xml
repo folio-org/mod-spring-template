@@ -24,7 +24,7 @@
   </licenses>
 
   <properties>
-    <java.version>11</java.version>
+    <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <sonar.exclusions>
@@ -36,7 +36,7 @@
     <!-- runtime dependencies -->
     <folio-spring-base.version>4.1.0</folio-spring-base.version>
     <openapi-generator.version>5.4.0</openapi-generator.version>
-    <mapstruct.version>1.5.1.Final</mapstruct.version>
+    <mapstruct.version>1.5.2.Final</mapstruct.version>
 
     <!-- test dependencies -->
     <wiremock.version>2.33.2</wiremock.version>
