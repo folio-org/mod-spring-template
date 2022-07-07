@@ -29,6 +29,7 @@
     <sonar.exclusions>
       <!-- define sonar exclusions here -->
     </sonar.exclusions>
+    <argLine />
 
     <!-- runtime dependencies -->
     <folio-spring-base.version>4.1.0</folio-spring-base.version>
