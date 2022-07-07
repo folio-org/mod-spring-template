@@ -23,7 +23,7 @@ It provides the initial configuration and common data schemas used by the FOLIO 
 ## How-to guide
 This guide shows how to create a new folio backend module using the mod-spring-template engine
 
-1. Clone the mod-sping-template repository from the github https://github.com/folio-org/mod-spring-template
+1. Clone the mod-spring-template repository from the github https://github.com/folio-org/mod-spring-template
 2. Rename the folder containing the project following FOLIO naming conventions and delete the git related folder .git
 3. Edit the pom.xml and provide valid values for tags
    - artifactId
@@ -72,4 +72,5 @@ Here are the links to some production backend modules based on the folio-spring-
 - Spring Boot https://spring.io/projects/spring-boot
 - Spring Data JPA https://spring.io/projects/spring-data-jpa
 - Spring for Apache Kafka https://spring.io/projects/spring-kafka
+- Spring Batch https://spring.io/projects/spring-batch
 
