@@ -28,6 +28,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <sonar.exclusions>
       <!-- define sonar exclusions here -->
+      src/main/java/org/folio/template/FolioSpringTemplateApplication.java
     </sonar.exclusions>
     <argLine />
 
@@ -47,7 +48,7 @@
       <artifactId>folio-spring-base</artifactId>
       <version>${folio-spring-base.version}</version>
     </dependency>
-	  <dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
       <exclusions>
@@ -279,7 +280,7 @@
         </executions>
       </plugin>
 -->
-	    <plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M7</version>
