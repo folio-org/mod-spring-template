@@ -12,7 +12,8 @@
   <artifactId>mod-spring-template</artifactId>
   <name>mod-spring-template</name>
   <version>1.0.0-SNAPSHOT</version>
-  <description>The blueprint module that should be used as a template for FOLIO Spring-based backend modules.</description>
+  <description>The blueprint module that should be used as a template for FOLIO Spring-based backend modules.
+  </description>
   <packaging>jar</packaging>
 
   <licenses>
@@ -30,7 +31,7 @@
       <!-- define sonar exclusions here -->
       src/main/java/org/folio/template/FolioSpringTemplateApplication.java
     </sonar.exclusions>
-    <argLine />
+    <argLine/>
 
     <!-- runtime dependencies -->
     <folio-spring-base.version>4.1.0</folio-spring-base.version>
@@ -217,69 +218,69 @@
           </execution>
         </executions>
       </plugin>
-<!--
-      <plugin>
-        <groupId>org.openapitools</groupId>
-        <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>${openapi-generator.version}</version>
-        <executions>
-          <execution>
-            <id>validator-registry</id>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <inputSpec>${validator-registry.yaml.file}</inputSpec>
-              <output>${project.build.directory}/generated-sources</output>
-              <generatorName>spring</generatorName>
-              <modelPackage>${project.groupId}.pv.domain.dto</modelPackage>
-              <apiPackage>${project.groupId}.pv.rest.resource</apiPackage>
-              <generateApis>true</generateApis>
-              <generateApiTests>true</generateApiTests>
-              <generateApiDocumentation>true</generateApiDocumentation>
-              <generateModels>true</generateModels>
-              <modelsToGenerate>error,errors,parameter,metadata,validationRule,validationRuleCollection</modelsToGenerate>
-              <generateModelTests>false</generateModelTests>
-              <generateSupportingFiles>true</generateSupportingFiles>
-              <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
-              <generateModelDocumentation>true</generateModelDocumentation>
-              <configOptions>
-                <java8>true</java8>
-                <dateLibrary>java</dateLibrary>
-                <interfaceOnly>true</interfaceOnly>
-              </configOptions>
+      <!--
+            <plugin>
+              <groupId>org.openapitools</groupId>
+              <artifactId>openapi-generator-maven-plugin</artifactId>
+              <version>${openapi-generator.version}</version>
+              <executions>
+                <execution>
+                  <id>validator-registry</id>
+                  <goals>
+                    <goal>generate</goal>
+                  </goals>
+                  <configuration>
+                    <inputSpec>${validator-registry.yaml.file}</inputSpec>
+                    <output>${project.build.directory}/generated-sources</output>
+                    <generatorName>spring</generatorName>
+                    <modelPackage>${project.groupId}.pv.domain.dto</modelPackage>
+                    <apiPackage>${project.groupId}.pv.rest.resource</apiPackage>
+                    <generateApis>true</generateApis>
+                    <generateApiTests>true</generateApiTests>
+                    <generateApiDocumentation>true</generateApiDocumentation>
+                    <generateModels>true</generateModels>
+                    <modelsToGenerate>error,errors,parameter,metadata,validationRule,validationRuleCollection</modelsToGenerate>
+                    <generateModelTests>false</generateModelTests>
+                    <generateSupportingFiles>true</generateSupportingFiles>
+                    <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+                    <generateModelDocumentation>true</generateModelDocumentation>
+                    <configOptions>
+                      <java8>true</java8>
+                      <dateLibrary>java</dateLibrary>
+                      <interfaceOnly>true</interfaceOnly>
+                    </configOptions>
 
-            </configuration>
-          </execution>
-          <execution>
-            <id>validator</id>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <inputSpec>${password-validator.yaml.file}</inputSpec>
-              <output>${project.build.directory}/generated-sources</output>
-              <generatorName>spring</generatorName>
-              <modelPackage>${project.groupId}.pv.domain.dto</modelPackage>
-              <apiPackage>${project.groupId}.pv.rest.resource</apiPackage>
-              <generateApis>true</generateApis>
-              <generateApiTests>true</generateApiTests>
-              <generateApiDocumentation>true</generateApiDocumentation>
-              <generateModels>true</generateModels>
-              <modelsToGenerate>password,validation_result</modelsToGenerate>
-              <generateModelTests>false</generateModelTests>
-              <generateSupportingFiles>false</generateSupportingFiles>
-              <generateModelDocumentation>true</generateModelDocumentation>
-              <configOptions>
-                <java8>true</java8>
-                <dateLibrary>java</dateLibrary>
-                <interfaceOnly>true</interfaceOnly>
-              </configOptions>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
--->
+                  </configuration>
+                </execution>
+                <execution>
+                  <id>validator</id>
+                  <goals>
+                    <goal>generate</goal>
+                  </goals>
+                  <configuration>
+                    <inputSpec>${password-validator.yaml.file}</inputSpec>
+                    <output>${project.build.directory}/generated-sources</output>
+                    <generatorName>spring</generatorName>
+                    <modelPackage>${project.groupId}.pv.domain.dto</modelPackage>
+                    <apiPackage>${project.groupId}.pv.rest.resource</apiPackage>
+                    <generateApis>true</generateApis>
+                    <generateApiTests>true</generateApiTests>
+                    <generateApiDocumentation>true</generateApiDocumentation>
+                    <generateModels>true</generateModels>
+                    <modelsToGenerate>password,validation_result</modelsToGenerate>
+                    <generateModelTests>false</generateModelTests>
+                    <generateSupportingFiles>false</generateSupportingFiles>
+                    <generateModelDocumentation>true</generateModelDocumentation>
+                    <configOptions>
+                      <java8>true</java8>
+                      <dateLibrary>java</dateLibrary>
+                      <interfaceOnly>true</interfaceOnly>
+                    </configOptions>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
