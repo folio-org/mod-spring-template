@@ -2,7 +2,7 @@ buildMvn {
   publishModDescriptor = true
   mvnDeploy = true
   doKubeDeploy = true
-  buildNode = 'jenkins-agent-java11'
+  buildNode = 'jenkins-agent-java17'
 
   doApiLint = true
   doApiDoc = true
@@ -13,7 +13,7 @@ buildMvn {
     buildJavaDocker {
       publishMaster = true
       healthChk = true
-      healthChkCmd = 'curl -sS --fail -o /dev/null  http://localhost:8081/apidocs/ || exit 1'
+      healthChkCmd = 'wget --no-verbose --tries=1 --spider http://localhost:8081/admin/health || exit 1'
     }
   }
 }
