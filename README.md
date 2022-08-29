@@ -42,8 +42,7 @@ This guide shows how to create a new folio backend module using the mod-spring-t
     public class EntityName {
        @Id
        @GeneratedValue(generator = "UUID")
-       @GenericGenerator(name = "UUID", strategy = "org.folio.des.repository.generator.CustomUUIDGenerator")
-       @Column(updatable = false, nullable = false)
+       @Column(updatable = false)
        private UUID id;
 
        // Entity fields
