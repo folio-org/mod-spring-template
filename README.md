@@ -35,30 +35,23 @@ This guide shows how to create a new folio backend module using the mod-spring-t
 6. Edit the pom.xml and uncomment the usage of org.openapitools plugin.
 7. Edit *DeploymentDescriptor-template.json* & *ModuleDescriptor-template.json* providing correct APIs that the module provides and a set of permissions it requires.
 8. Add a main class that represents the SpringBoot application. @SpringBootApplication annotation is a must to mark the main class as a SpringBoot application. Add @EnableFeignClients to activate feign client processing to call other modules and services.
-9. Add Spring Data Jpa dependency in pom.xml if not present, don't mention the dependency version as it must be mapped to spring-boot-starter parent version.
-   ```xml
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
+9. Add Entity classes in the entity package which will map to the tables in your database.
+   ```java
+    @Entity
+    @Data
+    public class EntityName {
+       @Id
+       @GeneratedValue(generator = "UUID")
+       @GenericGenerator(name = "UUID", strategy = "org.folio.des.repository.generator.CustomUUIDGenerator")
+       @Column(updatable = false, nullable = false)
+       private UUID id;
+
+       // Entity fields
+
+       // Getter/Setter methods
+    }
    ```
-10. Add Entity classes in the entity package which will map to the tables in your database.
-    ```java
-     @Entity
-     @Data
-     public class EntityName {
-        @Id
-        @GeneratedValue(generator = "UUID")
-        @GenericGenerator(name = "UUID", strategy = "org.folio.des.repository.generator.CustomUUIDGenerator")
-        @Column(updatable = false, nullable = false)
-        private UUID id;
-
-        // Entity fields
-
-        // Getter/Setter methods
-     }
-    ```
-11. To access database from Spring, create repository interfaces in repository package.
+10. To access database from Spring, create repository interfaces in repository package.
     ```java
     @Repository
     public interface RepositoryName extends JpaRepositry<T, ID> {
@@ -72,18 +65,18 @@ This guide shows how to create a new folio backend module using the mod-spring-t
     For more information, follow:
     * [Spring Data JPA - Reference Documentation](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/)
     * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-12. DB objects(tables/columns) should be created by Liquibase and should not be created automatically by the Spring Data/Hibernate thats why in your configuration file (application.properties/application.yml), set this property to "none":
+11. DB objects(tables/columns) should be created by Liquibase and should not be created automatically by the Spring Data/Hibernate thats why in your configuration file (application.properties/application.yml), set this property to "none":
     ```yaml
     spring:
       jpa:
         hibarnate:
           ddl-auto: none
     ```
-13. Provide correct values to the application.properties file.
-14. run mvn clean package to check that the build process completes successfully.
-15. The skeleton for your new module is ready for further business functionality development.
-16. Generated API controllers and DTOs will be stored in the **target/generated-sources/src/main/java** folder. The content of that folder will be automatically included in the list of source folders.
-17. Note that the default implementation for TenantAPI is already provided by the folio-spring-base library. If you need to customize it or provide your own implementation please reach https://github.com/folio-org/folio-spring-base#custom-_tenant-logic for details.
+12. Provide correct values to the application.properties file.
+13. run mvn clean package to check that the build process completes successfully.
+14. The skeleton for your new module is ready for further business functionality development.
+15. Generated API controllers and DTOs will be stored in the **target/generated-sources/src/main/java** folder. The content of that folder will be automatically included in the list of source folders.
+16. Note that the default implementation for TenantAPI is already provided by the folio-spring-base library. If you need to customize it or provide your own implementation please reach https://github.com/folio-org/folio-spring-base#custom-_tenant-logic for details.
 
 ## Notes
 
