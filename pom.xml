@@ -60,7 +60,6 @@
       </exclusions>
     </dependency>
 
-
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-jaxb-annotations</artifactId>

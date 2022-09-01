@@ -68,7 +68,7 @@ This guide shows how to create a new folio backend module using the mod-spring-t
     ```yaml
     spring:
       jpa:
-        hibarnate:
+        hibernate:
           ddl-auto: none
     ```
 12. Provide correct values to the application.properties file.
