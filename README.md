@@ -41,7 +41,7 @@ This guide shows how to create a new folio backend module using the mod-spring-t
     @Data
     public class EntityName {
        @Id
-       @GeneratedValue(generator = "UUID")
+       @GeneratedValue(strategy = GenerationType.AUTO)
        @Column(updatable = false)
        private UUID id;
 
