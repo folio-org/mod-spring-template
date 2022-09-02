@@ -115,6 +115,8 @@ This guide shows how to create a new folio backend module using the mod-spring-t
          liquibase:
            enabled: true
        ```
+    For more help on liquibase with Spring Boot below documentation link can be referred.
+    Liquibase Spring Boot Documentation : https://docs.liquibase.com/tools-integrations/springboot/home.html
 
 13. Provide correct values to the application.properties file.
 14. run mvn clean package to check that the build process completes successfully.
