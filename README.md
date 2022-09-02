@@ -88,13 +88,39 @@ This guide shows how to create a new folio backend module using the mod-spring-t
     
     4. SQL files should be kept in resources/db/changelog/change<version>/sql with version name.
 
-       ![sqlfolder](src/main/resources/sql-folder.png)    
+       ![sqlfolder](src/main/resources/sql-folder.png)
+
+    5. To test liqubase in local environment, you need to add plugin in pom file.
     
-14. Provide correct values to the application.properties file.
-15. run mvn clean package to check that the build process completes successfully.
-16. The skeleton for your new module is ready for further business functionality development.
-17. Generated API controllers and DTOs will ****be stored in the **target/generated-sources/src/main/java** folder. The content of that folder will be automatically included in the list of source folders.
-18. Note that the default implementation for TenantAPI is already provided by the folio-spring-base library. If you need to customize it or provide your own implementation please reach https://github.com/folio-org/folio-spring-base#custom-_tenant-logic for details.
+       ```
+       <plugin>
+        <groupId>org.liquibase</groupId>
+        <artifactId>liquibase-maven-plugin</artifactId>
+        <version>liquibase-version</version>
+        <configuration>
+          <promptOnNonLocalDatabase>true</promptOnNonLocalDatabase>
+          <changeLogFile>path of changelog-master.xml</changeLogFile>
+          <propertyFile>path of liquibase.properties</propertyFile>
+        </configuration>
+      </plugin>
+       ```
+
+    6. To create tables from the mvn liquibase:update with change log, as shown below.
+
+       ![dbtables](src/main/resources/db-tables.png)
+
+    7. Update/Add application.yml with below liquibase properties  
+       ```
+       spring:
+         liquibase:
+           enabled: true
+       ```
+
+13. Provide correct values to the application.properties file.
+14. run mvn clean package to check that the build process completes successfully.
+15. The skeleton for your new module is ready for further business functionality development.
+16. Generated API controllers and DTOs will ****be stored in the **target/generated-sources/src/main/java** folder. The content of that folder will be automatically included in the list of source folders.
+17. Note that the default implementation for TenantAPI is already provided by the folio-spring-base library. If you need to customize it or provide your own implementation please reach https://github.com/folio-org/folio-spring-base#custom-_tenant-logic for details.
 
 ## Notes
 
