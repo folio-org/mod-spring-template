@@ -72,7 +72,8 @@ This guide shows how to create a new folio backend module using the mod-spring-t
           ddl-auto: none
     ```
 12. Configure Liquibase and create Liquibase changelog  
-    1. Create a liquibase.properties text file to specify your driver class path, URL, and user authentication information for the database you want to capture. 
+    1. Create a liquibase.properties text file to specify your driver class path, URL, and user authentication information for the database you want to capture.
+    
     2. Here’s an example of a properties file for a PostgreSQL database.
     ```
     changeLogFile:dbchangelog.xml  
@@ -82,12 +83,17 @@ This guide shows how to create a new folio backend module using the mod-spring-t
     classpath:  postgresql-42.2.8.jar
     ```
     3. Create master changelog file under resources/db/changelog folder.
+    
+       ![changelog](src/main/resources/changelog-master.png)
+    
     4. SQL files should be kept in resources/db/changelog/change<version>/sql with version name.
-        
+
+       ![sqlfolder](src/main/resources/sql-folder.png)    
+    
 14. Provide correct values to the application.properties file.
 15. run mvn clean package to check that the build process completes successfully.
 16. The skeleton for your new module is ready for further business functionality development.
-17. Generated API controllers and DTOs will be stored in the **target/generated-sources/src/main/java** folder. The content of that folder will be automatically included in the list of source folders.
+17. Generated API controllers and DTOs will ****be stored in the **target/generated-sources/src/main/java** folder. The content of that folder will be automatically included in the list of source folders.
 18. Note that the default implementation for TenantAPI is already provided by the folio-spring-base library. If you need to customize it or provide your own implementation please reach https://github.com/folio-org/folio-spring-base#custom-_tenant-logic for details.
 
 ## Notes
