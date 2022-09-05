@@ -3,9 +3,11 @@
   "type": "object",
   "properties": {
     "key": {
+      "description": "Property key",
       "type": "string"
     },
     "value": {
+      "description": "Property value",
       "type": "string"
     }
   },
