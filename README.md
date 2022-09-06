@@ -71,53 +71,13 @@ This guide shows how to create a new folio backend module using the mod-spring-t
         hibernate:
           ddl-auto: none
     ```
-12. Configure Liquibase and create Liquibase changelog  
-    1. Create a liquibase.properties text file to specify your driver class path, URL, and user authentication information for the database you want to capture.
-    
-    2. Here’s an example of a properties file for a PostgreSQL database.
+12. Configure Liquibase by adding application.yml with below liquibase properties
     ```
-    changeLogFile:dbchangelog.xml  
-    url:  jdbc:postgresql://localhost:5432/mydatabase
-    username:  postgres  
-    password:  password****
-    classpath:  postgresql-42.2.8.jar
+    spring:
+      liquibase:
+        enabled: true
+        change-log: <PATH to change-log master file>
     ```
-    3. Create master changelog file under resources/db/changelog folder.
-    
-       ![changelog](src/main/resources/changelog-master.png)
-    
-    4. SQL files should be kept in resources/db/changelog/change<version>/sql with version name.
-
-       ![sqlfolder](src/main/resources/sql-folder.png)
-
-    5. To test liqubase in local environment, you need to add plugin in pom file.
-    
-       ```
-       <plugin>
-        <groupId>org.liquibase</groupId>
-        <artifactId>liquibase-maven-plugin</artifactId>
-        <version>liquibase-version</version>
-        <configuration>
-          <promptOnNonLocalDatabase>true</promptOnNonLocalDatabase>
-          <changeLogFile>path of changelog-master.xml</changeLogFile>
-          <propertyFile>path of liquibase.properties</propertyFile>
-        </configuration>
-      </plugin>
-       ```
-
-    6. To create tables from the mvn liquibase:update with change log, as shown below.
-
-       ![dbtables](src/main/resources/db-tables.png)
-
-    7. Update/Add application.yml with below liquibase properties  
-       ```
-       spring:
-         liquibase:
-           enabled: true
-       ```
-    For more help on liquibase with Spring Boot below documentation link can be referred.
-    Liquibase Spring Boot Documentation : https://docs.liquibase.com/tools-integrations/springboot/home.html
-
 13. Provide correct values to the application.properties file.
 14. run mvn clean package to check that the build process completes successfully.
 15. The skeleton for your new module is ready for further business functionality development.
