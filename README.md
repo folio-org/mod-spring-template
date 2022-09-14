@@ -12,13 +12,16 @@ The blueprint module that could be used as a template for FOLIO Spring-based bac
 - [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
 - [How-to guide](#how-to-guide)
+- [Spring Boot Actuator and Metrics](#spring-boot-actuator-and-metrics)
+  - [How to setup Spring Boot Actuator and Endpoints](#how-to-setup-spring-boot-actuator-and-endpoints)
+  - [How to setup Metrics and Prometheus](#how-to-setup-metrics-and-prometheus)
+  - [Important Metrics](#important-metrics)
 - [Notes](#notes)
 
 ## Introduction
 
 This is the blueprint module that should be used as a template for FOLIO Spring-based backend modules.
 It provides the initial configuration and common data schemas used by the FOLIO platform.
-
 
 ## How-to guide
 This guide shows how to create a new folio backend module using the mod-spring-template engine
@@ -77,6 +80,114 @@ This guide shows how to create a new folio backend module using the mod-spring-t
 15. Generated API controllers and DTOs will be stored in the **target/generated-sources/src/main/java** folder. The content of that folder will be automatically included in the list of source folders.
 16. Note that the default implementation for TenantAPI is already provided by the folio-spring-base library. If you need to customize it or provide your own implementation please reach https://github.com/folio-org/folio-spring-base#custom-_tenant-logic for details.
 
+## Spring Boot Actuator and Metrics
+- Spring Boot Actuator module helps you monitor and manage your Spring Boot application by providing production-ready
+  features like health check-up, auditing, metrics gathering, HTTP tracing etc. All of these features can be accessed
+  over JMX or HTTP endpoints.
+- Actuator also integrates with external application monitoring systems like [Prometheus](https://prometheus.io/)
+- Spring Boot Actuator has many [capabilities](https://www.baeldung.com/spring-boot-actuators)
+
+### How to setup Spring Boot Actuator and Endpoints
+1. To add spring-boot-actuator to a spring boot application following dependency must be added -
+````<dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-actuator</artifactId>
+   </dependency>
+````
+2. Actuator creates several so-called endpoints that can be exposed over HTTP or JMX to let you monitor and interact with your application.
+   For example, There is a /health endpoint that provides basic information about the application’s health. The /metrics endpoint shows several useful metrics information like JVM memory used, system CPU usage, open files, and much more.
+3. An actuator endpoint can be enabled or disabled by setting the property management.endpoint.<id>.enabled to true or false in the application.yml file (where id is the identifier for the endpoint).
+4. To expose an actuator endpoints over HTTP and JMX can be set in application.yml file as
+````management:
+   endpoints:
+   web:
+   exposure:
+   include: info,health,env,httptrace
+````
+5. For more information about various endpoints [(click here)](https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/#overview) supported by spring boot actuator.
+
+### How to setup Metrics and Prometheus
+1. Add the dependency for micrometer-prometheus as shown below
+````
+   <dependency>
+   <groupId>io.micrometer</groupId>
+   <artifactId>micrometer-registry-prometheus</artifactId>
+   </dependency>
+
+````
+2. Expose the metrics and prometheus endpoints as shown
+````management:
+   endpoints:
+   web:
+   exposure:
+   include: info,health,env,httptrace,metrics,prometheus
+````
+3. There is an option to setup prometheus locally to view the metrics. [Download](https://prometheus.io/download/) the prometheus server. Edit the prometheus.yml file to provide the -
+  1. Alert manager configuration
+  2. Metrics path
+  3. Targets
+
+*As an example for local prometheus.yml file*
+````
+# my global config
+global:
+scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+# scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+alertmanagers:
+- static_configs:
+- targets: ["localhost:9090"]
+# - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+# - "first_rules.yml"
+# - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+# The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+- job_name: "prometheus"
+
+#Metrics info needed for memory,
+#cpu
+#DB connection
+
+    metrics_path: '/admin/prometheus'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ["localhost:8081"]
+
+````
+4. Run the local prometheus server and as per the above example hit the http://localhost:9090/graph to see various metrics for the targeted application.
+
+### Important Metrics
+1. CPU Usage - The metric used here is “node_cpu_seconds_total”. This is a counter metric that counts the number of seconds the CPU has been running in a particular mode. The CPU has several modes such as iowait, idle, user, and system. Because the objective is to count usage, use a query that excludes idle time:
+
+    ``sum by (cpu)(node_cpu_seconds_total{mode!="idle"})``
+
+    The sum function is used to combine all CPU modes. The result shows how many seconds the CPU has run from the start. To tell if the CPU has been busy or idle recently, use the rate function to calculate the growth rate of the counter:
+
+    ``(sum by (cpu)(rate(node_cpu_seconds_total{mode!="idle"}[5m]))*100``
+
+    The above query produces the rate of increase over the last five minutes, which lets you see how much computing power the CPU is using. To get the result as a percentage, multiply the query by 100.
+2. Memory Usage - The following query calculates the total percentage of used memory:
+
+    ``node_memory_Active_bytes/node_memory_MemTotal_bytes*100``
+
+    To obtain the percentage of memory use, divide used memory by the sum and multiply by 100.
+
+    Free Disk - You need to know your free disk usage to understand when there needs to be more space on the infrastructure nodes. Again, the same memory usage method is used here, but with different metric names.
+
+    ``node_filesystem_avail_bytes/node_filesystem_size_bytes*100``
+3. DB Usage - For the DB usage metrics Grafana can be used with PostgresSql or Postgres Exporter with Prometheus. [Click here](https://fatdba.com/2021/03/24/how-to-monitor-your-postgresql-database-using-grafana-prometheus-postgres_exporter/)
+Various pg metrics are present which can be further used to analyze the usage of DB with the application.
+Postgress Exporter can be installed from [here](https://github.com/prometheus-community/postgres_exporter)
 ## Notes
 
 A detailed description of the functionality provided by folio-spring-base java library you can find on https://github.com/folio-org/folio-spring-base page.
