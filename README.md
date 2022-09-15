@@ -270,7 +270,30 @@ Postgress Exporter can be installed from [here](https://github.com/prometheus-co
     </dependency>
 ````
 
-6. To create Topic either it can be done using shell or by creating Topic using java
+6. Use the following in application.yml file
+
+````
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9092}
+    consumer:
+      max-poll-records: 50
+    security:
+      protocol: ${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}
+    ssl:
+      key-store-password: ${KAFKA_SSL_KEYSTORE_PASSWORD:}
+      key-store-location: ${KAFKA_SSL_KEYSTORE_LOCATION:}
+      trust-store-password: ${KAFKA_SSL_TRUSTSTORE_PASSWORD:}
+      trust-store-location: ${KAFKA_SSL_TRUSTSTORE_LOCATION:}
+    producer:
+      acks: all
+      properties:
+        enable.idempotence: true
+        max.in.flight.requests.per.connection: 5
+        retries: 5
+````
+
+8. To create Topic either it can be done using shell or by creating Topic using java
 
 ````
 ### Using Shell :
