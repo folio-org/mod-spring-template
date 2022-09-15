@@ -314,8 +314,7 @@ spring:
       .build();
   }
 ````
-8. To create Kafka Producer , Kafka Consumer and Kafka Template create a configuration file refer [here](https://github.com/folio-org/folio-sample-modules/blob/FOLSPRINGB-63/mod-spring-petstore/src/main/java/org/folio/petstore/configuration/KafkaConfiguration.java)
-
+8. To create Kafka Producer , Kafka Consumer and Kafka Template create a configuration file refer [here](https://github.com/folio-org/folio-sample-modules/tree/master/mod-spring-petstore/src/main/java/org/folio/petstore/configuration/KafkaConfiguration.java)
 9. To send message use kafka template :
 
 ````
