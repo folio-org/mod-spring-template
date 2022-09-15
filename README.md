@@ -126,11 +126,6 @@ This guide shows how to create a new folio backend module using the mod-spring-t
 15. The skeleton for your new module is ready for further business functionality development.
 16. Generated API controllers and DTOs will ****be stored in the **target/generated-sources/src/main/java** folder. The content of that folder will be automatically included in the list of source folders.
 17. Note that the default implementation for TenantAPI is already provided by the folio-spring-base library. If you need to customize it or provide your own implementation please reach https://github.com/folio-org/folio-spring-base#custom-_tenant-logic for details.
-12. Provide correct values to the application.properties file.
-13. run mvn clean package to check that the build process completes successfully.
-14. The skeleton for your new module is ready for further business functionality development.
-15. Generated API controllers and DTOs will be stored in the **target/generated-sources/src/main/java** folder. The content of that folder will be automatically included in the list of source folders.
-16. Note that the default implementation for TenantAPI is already provided by the folio-spring-base library. If you need to customize it or provide your own implementation please reach https://github.com/folio-org/folio-spring-base#custom-_tenant-logic for details.
 
 ## Spring Boot Actuator and Metrics
 - Spring Boot Actuator module helps you monitor and manage your Spring Boot application by providing production-ready
