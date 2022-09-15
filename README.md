@@ -259,6 +259,136 @@ scrape_configs:
 3. DB Usage - For the DB usage metrics Grafana can be used with PostgresSql or Postgres Exporter with Prometheus. [Click here](https://fatdba.com/2021/03/24/how-to-monitor-your-postgresql-database-using-grafana-prometheus-postgres_exporter/)
 Various pg metrics are present which can be further used to analyze the usage of DB with the application.
 Postgress Exporter can be installed from [here](https://github.com/prometheus-community/postgres_exporter)
+
+### How to setup and integrate with Spring Boot & Kafka
+
+1. Install Apache kafka from [here](https://www.apache.org/dyn/closer.cgi?path=/kafka/3.2.1/kafka_2.13-3.2.1.tgz)
+2. Unzip the tgz file and tar file
+3. If you have windows machine run the following commands :
+
+````
+# Start the ZooKeeper service
+.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+
+# Start the Kafka broker service
+.\bin\windows\kafka-server-start.bat .\config\server.properties
+
+````
+
+4. If you have linux machine run the following commands :
+
+````
+# Start the ZooKeeper service
+./bin/zookeeper-server-start.sh ./config/zookeeper.properties
+
+# Start the Kafka broker service
+./bin/kafka-server-start.sh ./config/server.properties
+
+````
+5. Use kafka dependency :
+````
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+      <version>${spring-kafka.version}</version>
+    </dependency>
+````
+
+6. Use the following in application.yml file
+
+````
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9092}
+    consumer:
+      max-poll-records: 50
+    security:
+      protocol: ${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}
+    ssl:
+      key-store-password: ${KAFKA_SSL_KEYSTORE_PASSWORD:}
+      key-store-location: ${KAFKA_SSL_KEYSTORE_LOCATION:}
+      trust-store-password: ${KAFKA_SSL_TRUSTSTORE_PASSWORD:}
+      trust-store-location: ${KAFKA_SSL_TRUSTSTORE_LOCATION:}
+    producer:
+      acks: all
+      properties:
+        enable.idempotence: true
+        max.in.flight.requests.per.connection: 5
+        retries: 5
+````
+
+7. To create Topic either it can be done using shell or by creating Topic using java
+
+````
+### Using Shell :
+
+/bin/kafka-topics.sh --create \
+    --zookeeper <hostname>:<port> \
+    --topic <topic-name> \
+    --partitions <number-of-partitions> \
+    --replication-factor <number-of-replicating-servers>
+
+### Using Java
+
+  @Bean
+  public NewTopic generalTopic() {
+     TopicBuilder.name(< topic name >)
+      .partitions(< number of partition >)
+      .replicas(< replication factor >)
+      .build();
+  }
+````
+8. To create Kafka Producer , Kafka Consumer and Kafka Template create a configuration file refer [here](https://github.com/folio-org/folio-sample-modules/tree/master/mod-spring-petstore/src/main/java/org/folio/petstore/configuration/KafkaConfiguration.java)
+9. To send message use kafka template :
+
+````
+@Autowired
+private KafkaTemplate<?, ? > KafkaTemplate;
+....
+
+KafkaTemplate.send(< topicName >, < key > , < data > );
+````
+
+10. To listen the message use kafka Listener :
+
+````
+@KafkaListener(
+    topics = "< topic name >",
+    concurrency = "< number of concurrency >",
+    groupId = "< group ID >",
+    containerFactory = "< bean of concurrentKafkaListnerFactroty >"
+  )
+  public void handlePetEvents(ConsumerRecord<?, ?> consumerRecord){ .. }
+````
+
+11. For testing the module container tests can be used , which require docker in the system .
+12. Install docker from [here](https://docs.docker.com/desktop/install/windows-install/)
+13. To write container test use testcontainers dependency
+````
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>kafka</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+````
+14. To run basic container test use the following template :
+
+````
+@SpringBootTest(classes = {...})
+@Testcontainers
+public class KafkaIntegrationTests {
+
+  @Container
+  private static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.5.3"));
+
+  // write tests
+
+}
+````
+
+15. For more about Kafka and Spring boot refer [here](https://spring.io/projects/spring-kafka)
+###
 ## Notes
 
 A detailed description of the functionality provided by folio-spring-base java library you can find on https://github.com/folio-org/folio-spring-base page.
