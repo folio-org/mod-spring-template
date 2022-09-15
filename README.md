@@ -12,10 +12,17 @@ The blueprint module that could be used as a template for FOLIO Spring-based bac
 - [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
 - [How-to guide](#how-to-guide)
-- [Spring Boot Actuator and Metrics](#spring-boot-actuator-and-metrics)
-  - [How to setup Spring Boot Actuator and Endpoints](#how-to-setup-spring-boot-actuator-and-endpoints)
-  - [How to setup Metrics and Prometheus](#how-to-setup-metrics-and-prometheus)
-  - [Important Metrics](#important-metrics)
+- [Instrumentation](#instrumentation)
+  - [Spring Boot Actuator and Metrics](#spring-boot-actuator-and-metrics)
+    - [How to setup Spring Boot Actuator and Endpoints](#how-to-setup-spring-boot-actuator-and-endpoints)
+    - [How to setup Metrics and Prometheus](#how-to-setup-metrics-and-prometheus)
+    - [Important Metrics](#important-metrics)
+- [Logging](#logging)
+- [Monitoring](#monitoring)
+  - [Monitoring and Management over JMX](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html#actuator.jmx)
+  - [Monitoring and Management over HTTP](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html#actuator.monitoring)
+- [Kafka](#kafka)
+  - [How to setup and integrate with Spring Boot & Kafka](#how-to-setup-and-integrate-with-spring-boot--kafka)
 - [Notes](#notes)
 
 ## Introduction
@@ -29,10 +36,10 @@ This guide shows how to create a new folio backend module using the mod-spring-t
 1. Clone the mod-spring-template repository from the github https://github.com/folio-org/mod-spring-template
 2. Rename the folder containing the project following FOLIO naming conventions and delete the git related folder .git
 3. Edit the pom.xml and provide valid values for tags
-   - artifactId
-   - name
-   - version
-   - description
+  - artifactId
+  - name
+  - version
+  - description
 4. Edit the Dockerfile and provide the correct value for APP_FILE environment variable.
 5. Add OpenAPI specification file with the API provided by this new module into the src/main/resources/swagger.api folder
 6. Edit the pom.xml and uncomment the usage of org.openapitools plugin.
@@ -65,8 +72,8 @@ This guide shows how to create a new folio backend module using the mod-spring-t
     ID: Type of the id of the entity that repository manages (Generally the wrapper class of your @Id that is created inside the Entity/Model class)
 
     For more information, follow:
-    * [Spring Data JPA - Reference Documentation](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/)
-    * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
+  * [Spring Data JPA - Reference Documentation](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/)
+  * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
 11. DB objects(tables/columns) should be created by Liquibase and should not be created automatically by the Spring Data/Hibernate thats why in your configuration file (application.properties/application.yml), set this property to "none":
     ```yaml
     spring:
@@ -151,6 +158,7 @@ public interface StoreClient {
 17. Generated API controllers and DTOs will ****be stored in the **target/generated-sources/src/main/java** folder. The content of that folder will be automatically included in the list of source folders.
 18. Note that the default implementation for TenantAPI is already provided by the folio-spring-base library. If you need to customize it or provide your own implementation please reach https://github.com/folio-org/folio-spring-base#custom-_tenant-logic for details.
 
+# Instrumentation
 ## Spring Boot Actuator and Metrics
 - Spring Boot Actuator module helps you monitor and manage your Spring Boot application by providing production-ready
   features like health check-up, auditing, metrics gathering, HTTP tracing etc. All of these features can be accessed
@@ -194,9 +202,9 @@ public interface StoreClient {
    include: info,health,env,httptrace,metrics,prometheus
 ````
 3. There is an option to setup prometheus locally to view the metrics. [Download](https://prometheus.io/download/) the prometheus server. Edit the prometheus.yml file to provide the -
-  1. Alert manager configuration
-  2. Metrics path
-  3. Targets
+1. Alert manager configuration
+2. Metrics path
+3. Targets
 
 *As an example for local prometheus.yml file*
 ````
@@ -240,26 +248,27 @@ scrape_configs:
 ### Important Metrics
 1. CPU Usage - The metric used here is “node_cpu_seconds_total”. This is a counter metric that counts the number of seconds the CPU has been running in a particular mode. The CPU has several modes such as iowait, idle, user, and system. Because the objective is to count usage, use a query that excludes idle time:
 
-    ``sum by (cpu)(node_cpu_seconds_total{mode!="idle"})``
+   ``sum by (cpu)(node_cpu_seconds_total{mode!="idle"})``
 
-    The sum function is used to combine all CPU modes. The result shows how many seconds the CPU has run from the start. To tell if the CPU has been busy or idle recently, use the rate function to calculate the growth rate of the counter:
+   The sum function is used to combine all CPU modes. The result shows how many seconds the CPU has run from the start. To tell if the CPU has been busy or idle recently, use the rate function to calculate the growth rate of the counter:
 
-    ``(sum by (cpu)(rate(node_cpu_seconds_total{mode!="idle"}[5m]))*100``
+   ``(sum by (cpu)(rate(node_cpu_seconds_total{mode!="idle"}[5m]))*100``
 
-    The above query produces the rate of increase over the last five minutes, which lets you see how much computing power the CPU is using. To get the result as a percentage, multiply the query by 100.
+   The above query produces the rate of increase over the last five minutes, which lets you see how much computing power the CPU is using. To get the result as a percentage, multiply the query by 100.
 2. Memory Usage - The following query calculates the total percentage of used memory:
 
-    ``node_memory_Active_bytes/node_memory_MemTotal_bytes*100``
+   ``node_memory_Active_bytes/node_memory_MemTotal_bytes*100``
 
-    To obtain the percentage of memory use, divide used memory by the sum and multiply by 100.
+   To obtain the percentage of memory use, divide used memory by the sum and multiply by 100.
 
-    Free Disk - You need to know your free disk usage to understand when there needs to be more space on the infrastructure nodes. Again, the same memory usage method is used here, but with different metric names.
+   Free Disk - You need to know your free disk usage to understand when there needs to be more space on the infrastructure nodes. Again, the same memory usage method is used here, but with different metric names.
 
-    ``node_filesystem_avail_bytes/node_filesystem_size_bytes*100``
+   ``node_filesystem_avail_bytes/node_filesystem_size_bytes*100``
 3. DB Usage - For the DB usage metrics Grafana can be used with PostgresSql or Postgres Exporter with Prometheus. [Click here](https://fatdba.com/2021/03/24/how-to-monitor-your-postgresql-database-using-grafana-prometheus-postgres_exporter/)
-Various pg metrics are present which can be further used to analyze the usage of DB with the application.
-Postgress Exporter can be installed from [here](https://github.com/prometheus-community/postgres_exporter)
+   Various pg metrics are present which can be further used to analyze the usage of DB with the application.
+   Postgress Exporter can be installed from [here](https://github.com/prometheus-community/postgres_exporter)
 
+## Kafka
 ### How to setup and integrate with Spring Boot & Kafka
 
 1. Install Apache kafka from [here](https://www.apache.org/dyn/closer.cgi?path=/kafka/3.2.1/kafka_2.13-3.2.1.tgz)
@@ -388,7 +397,24 @@ public class KafkaIntegrationTests {
 ````
 
 15. For more about Kafka and Spring boot refer [here](https://spring.io/projects/spring-kafka)
-###
+
+## Logging
+See the logging configuration and usage from [here](https://github.com/folio-org/folio-spring-base#logging)
+## Monitoring
+The runtime framework via the `/admin` API exposes (as previously mentioned) some APIs to help monitor the service (setting log levels, DB information).
+Some are listed below (and see the [full set](https://docs.spring.io/spring-boot/docs/2.7.3/actuator-api/htmlsingle/):
+
+- `/admin/jstack` -- Stack traces of all threads in the JVM to help find slower and bottleneck methods.
+- `/admin/memory` -- A jstat type of reply indicating memory usage within the JVM on a per pool basis (survivor, old gen, new gen, metadata, etc.) with usage percentages.
+- `/admin/info` -- The info endpoint provides general information about the application.
+- `/admin/env` -- The env endpoint provides information about the application’s Environment.
+- `/admin/metrics` -- The metrics endpoint provides access to application metrics.
+- `/admin/prometheus` -- The prometheus endpoint provides Spring Boot application’s metrics in the format required for scraping by a Prometheus server.
+- `/admin/liquibase` -- The liquibase endpoint provides information about database change sets applied by Liquibase.
+- `/admin/health` -- Returns status code 200 as long as service is up.
+
+
+
 ## Notes
 
 A detailed description of the functionality provided by folio-spring-base java library you can find on https://github.com/folio-org/folio-spring-base page.
