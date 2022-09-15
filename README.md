@@ -74,11 +74,35 @@ This guide shows how to create a new folio backend module using the mod-spring-t
         hibernate:
           ddl-auto: none
     ```
-12. Provide correct values to the application.properties file.
-13. run mvn clean package to check that the build process completes successfully.
-14. The skeleton for your new module is ready for further business functionality development.
-15. Generated API controllers and DTOs will be stored in the **target/generated-sources/src/main/java** folder. The content of that folder will be automatically included in the list of source folders.
-16. Note that the default implementation for TenantAPI is already provided by the folio-spring-base library. If you need to customize it or provide your own implementation please reach https://github.com/folio-org/folio-spring-base#custom-_tenant-logic for details.
+12. To add Feign Client support:
+    * Add ```@EnableFeignClients``` annotation to the main class.
+    ```java
+      @SpringBootApplication
+      @EnableFeignClients
+      public class Application {
+        public static void main(String[] args) {
+          SpringApplication.run(Application.class, args);
+        }
+      }
+    ```
+    * Create a feign client package and add a feign client interface
+    ```java
+    @FeignClient(name = "stores", url="", configuration = FeignClientConfig.class)
+    public interface StoreClient {
+      @GetMapping("/stores/{storeId}")
+      JsonNode getStore(@RequestParam String storeId);
+
+      @PostMapping("/stores")
+      JsonNode createStore(@RequestBody Object store);
+    }
+    ```
+    * FeignClientConfig is a configuration class where you can create beans of Decoder, Encoder, Logger, Contract, Feign.Builder and Client to override default beans created by Spring Boot. You can also create beans of Logger.Level, ErrorDecoder and RequestInterceptor to include these features.
+    * For detailed information, follow this [Feign Client Documentation](https://docs.spring.io/spring-cloud-openfeign/docs/current/reference/html/)
+13. Provide correct values to the application.properties file.
+14. run mvn clean package to check that the build process completes successfully.
+15. The skeleton for your new module is ready for further business functionality development.
+16. Generated API controllers and DTOs will be stored in the **target/generated-sources/src/main/java** folder. The content of that folder will be automatically included in the list of source folders.
+17. Note that the default implementation for TenantAPI is already provided by the folio-spring-base library. If you need to customize it or provide your own implementation please reach https://github.com/folio-org/folio-spring-base#custom-_tenant-logic for details.
 
 ## Spring Boot Actuator and Metrics
 - Spring Boot Actuator module helps you monitor and manage your Spring Boot application by providing production-ready
