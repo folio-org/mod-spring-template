@@ -293,7 +293,7 @@ spring:
         retries: 5
 ````
 
-8. To create Topic either it can be done using shell or by creating Topic using java
+7. To create Topic either it can be done using shell or by creating Topic using java
 
 ````
 ### Using Shell :
@@ -314,9 +314,9 @@ spring:
       .build();
   }
 ````
-7. To create Kafka Producer , Kafka Consumer and Kafka Template create a configuration file refer [here](https://github.com/folio-org/folio-sample-modules/blob/FOLSPRINGB-63/mod-spring-petstore/src/main/java/org/folio/petstore/configuration/KafkaConfiguration.java)
+8. To create Kafka Producer , Kafka Consumer and Kafka Template create a configuration file refer [here](https://github.com/folio-org/folio-sample-modules/blob/FOLSPRINGB-63/mod-spring-petstore/src/main/java/org/folio/petstore/configuration/KafkaConfiguration.java)
 
-8. To send message use kafka template :
+9. To send message use kafka template :
 
 ````
 @Autowired
@@ -326,7 +326,7 @@ private KafkaTemplate<?, ? > KafkaTemplate;
 KafkaTemplate.send(< topicName >, < key > , < data > );
 ````
 
-9. To listen the message use kafka Listener :
+10. To listen the message use kafka Listener :
 
 ````
 @KafkaListener(
@@ -338,9 +338,9 @@ KafkaTemplate.send(< topicName >, < key > , < data > );
   public void handlePetEvents(ConsumerRecord<?, ?> consumerRecord){ .. }
 ````
 
-10. For testing the module container tests can be used , which require docker in the system .
-11. Install docker from [here](https://docs.docker.com/desktop/install/windows-install/)
-12. To write container test use testcontainers dependency
+11. For testing the module container tests can be used , which require docker in the system .
+12. Install docker from [here](https://docs.docker.com/desktop/install/windows-install/)
+13. To write container test use testcontainers dependency
 ````
     <dependency>
       <groupId>org.testcontainers</groupId>
@@ -349,7 +349,7 @@ KafkaTemplate.send(< topicName >, < key > , < data > );
       <scope>test</scope>
     </dependency>
 ````
-13. To run basic container test use the following template :
+14. To run basic container test use the following template :
 
 ````
 @SpringBootTest(classes = {...})
@@ -364,7 +364,7 @@ public class KafkaIntegrationTests {
 }
 ````
 
-14. For more about Kafka and Spring boot refer [here](https://spring.io/projects/spring-kafka)
+15. For more about Kafka and Spring boot refer [here](https://spring.io/projects/spring-kafka)
 ###
 ## Notes
 
