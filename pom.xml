@@ -9,10 +9,10 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>org.folio</groupId>
-  <artifactId>mod-spring-template</artifactId>
+  <artifactId>mod-frm-query-processor</artifactId>
   <name>mod-spring-template</name>
   <version>1.0.0-SNAPSHOT</version>
-  <description>The blueprint module that should be used as a template for FOLIO Spring-based backend modules.
+  <description>FOLIO Reporting Machine Query Processor.
   </description>
   <packaging>jar</packaging>
 
