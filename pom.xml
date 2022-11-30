@@ -10,7 +10,7 @@
   </parent>
   <groupId>org.folio</groupId>
   <artifactId>mod-frm-query-processor</artifactId>
-  <name>mod-spring-template</name>
+  <name>mod-frm-query-processor</name>
   <version>1.0.0-SNAPSHOT</version>
   <description>FOLIO Reporting Machine Query Processor.
   </description>
