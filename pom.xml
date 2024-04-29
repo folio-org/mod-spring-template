@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.1</version>
+    <version>3.2.4</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>org.folio</groupId>
@@ -18,8 +18,9 @@
 
   <licenses>
     <license>
-      <name>Apache License 2.0</name>
-      <url>https://spdx.org/licenses/Apache-2.0</url>
+      <name>Apache-2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
     </license>
   </licenses>
 
@@ -33,14 +34,15 @@
     </sonar.exclusions>
     <argLine/>
 
+    <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
+
     <!-- runtime dependencies -->
-    <folio-spring-base.version>4.1.0</folio-spring-base.version>
-    <openapi-generator.version>5.4.0</openapi-generator.version>
-    <mapstruct.version>1.5.2.Final</mapstruct.version>
+    <folio-spring-base.version>8.1.0</folio-spring-base.version>
+    <openapi-generator.version>7.4.0</openapi-generator.version>
+    <mapstruct.version>1.5.5.Final</mapstruct.version>
 
     <!-- test dependencies -->
-    <wiremock.version>2.33.2</wiremock.version>
-    <testcontainers.version>1.17.2</testcontainers.version>
+    <wiremock.version>3.5.2</wiremock.version>
   </properties>
 
   <dependencies>
@@ -59,7 +61,10 @@
         </exclusion>
       </exclusions>
     </dependency>
-
+      <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+    </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-jaxb-annotations</artifactId>
@@ -120,22 +125,19 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>postgresql</artifactId>
-      <version>${testcontainers.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>${testcontainers.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.tomakehurst</groupId>
-      <artifactId>wiremock-jre8</artifactId>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock</artifactId>
       <version>${wiremock.version}</version>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -203,7 +205,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.3.0</version>
         <executions>
           <execution>
             <phase>generate-sources</phase>
@@ -248,6 +249,8 @@
                       <java8>true</java8>
                       <dateLibrary>java</dateLibrary>
                       <interfaceOnly>true</interfaceOnly>
+                      <useSpringBoot3>true</useSpringBoot3>
+                      <useTags>true</useTags>
                     </configOptions>
 
                   </configuration>
@@ -275,6 +278,8 @@
                       <java8>true</java8>
                       <dateLibrary>java</dateLibrary>
                       <interfaceOnly>true</interfaceOnly>
+                      <useSpringBoot3>true</useSpringBoot3>
+                      <useTags>true</useTags>
                     </configOptions>
                   </configuration>
                 </execution>
@@ -284,7 +289,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M7</version>
         <configuration>
           <useSystemClassLoader>false</useSystemClassLoader>
           <argLine>@{argLine} -Dfile.encoding=UTF-8</argLine>
@@ -294,7 +298,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>3.0.0-M6</version>
+        <version>${maven-release-plugin.version}</version>
         <configuration>
           <preparationGoals>clean verify</preparationGoals>
           <tagNameFormat>v@{project.version}</tagNameFormat>
@@ -306,7 +310,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.1.0</version>
         <executions>
           <execution>
             <id>enforce-maven</id>

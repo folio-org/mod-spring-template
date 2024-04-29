@@ -2,7 +2,7 @@ package org.folio.template;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
