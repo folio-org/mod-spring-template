@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.3.3</version>
+    <version>3.3.5</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>org.folio</groupId>
@@ -37,9 +37,9 @@
     <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
 
     <!-- runtime dependencies -->
-    <folio-spring-base.version>8.1.2</folio-spring-base.version>
-    <openapi-generator.version>7.8.0</openapi-generator.version>
-    <mapstruct.version>1.6.0</mapstruct.version>
+    <folio-spring-base.version>8.2.1</folio-spring-base.version>
+    <openapi-generator.version>7.9.0</openapi-generator.version>
+    <mapstruct.version>1.6.2</mapstruct.version>
 
     <!-- test dependencies -->
     <wiremock.version>3.9.1</wiremock.version>
