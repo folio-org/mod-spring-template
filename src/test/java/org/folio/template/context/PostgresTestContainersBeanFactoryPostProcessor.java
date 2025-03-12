@@ -12,8 +12,12 @@ import org.testcontainers.junit.jupiter.Container;
 @Profile("testcontainers-pg")
 public class PostgresTestContainersBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
+  private static final String DEFAULT_POSTGRESQL_IMAGE_NAME = "postgres:16-alpine";
+  private static final String POSTGRESQL_IMAGE_NAME =
+      System.getenv().getOrDefault("TESTCONTAINERS_POSTGRES_IMAGE", DEFAULT_POSTGRESQL_IMAGE_NAME);
+
   @Container
-  public static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>("postgres:11-alpine");
+  public static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>(POSTGRESQL_IMAGE_NAME);
 
   @Override
   public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
