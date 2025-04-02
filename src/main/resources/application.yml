@@ -10,7 +10,11 @@ spring:
   datasource:
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:postgres}
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_DATABASE:db}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_DATABASE:db}?ApplicationName=${spring.application.name}
+  hikari:
+    data-source-properties:
+      # see https://jdbc.postgresql.org/documentation/use/#connection-parameters
+      ApplicationName: ${spring.application.name}
   sql:
     init:
       # to boot up application despite of any DB connection issues
