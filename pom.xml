@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.4.3</version>
+    <version>3.4.4</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>org.folio</groupId>
@@ -37,7 +37,7 @@
     <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
 
     <!-- runtime dependencies -->
-    <folio-spring-base.version>9.0.0</folio-spring-base.version>
+    <folio-spring-base.version>9.0.1</folio-spring-base.version>
     <openapi-generator.version>7.12.0</openapi-generator.version>
     <mapstruct.version>1.6.3</mapstruct.version>
 
